@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zjc.bookmanage.org.dao.BookMapper">
+  <resultMap id="BaseResultMap" type="zjc.bookmanage.org.model.Book">
+    <constructor>
+      <idArg column="BookID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="BookKindID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="BookName" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="BookPrice" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    BookID, BookKindID, BookName, BookPrice
+  </sql>
+  <select id="selectByExample" parameterType="zjc.bookmanage.org.model.BookExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from bookjyc
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bookjyc
+    where BookID = #{bookid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bookjyc
+    where BookID = #{bookid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="zjc.bookmanage.org.model.BookExample">
+    delete from bookjyc
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="zjc.bookmanage.org.model.Book">
+    insert into bookjyc (BookID, BookKindID, BookName, 
+      BookPrice)
+    values (#{bookid,jdbcType=INTEGER}, #{bookkindid,jdbcType=INTEGER}, #{bookname,jdbcType=VARCHAR}, 
+      #{bookprice,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="zjc.bookmanage.org.model.Book">
+    insert into bookjyc
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bookid != null">
+        BookID,
+      </if>
+      <if test="bookkindid != null">
+        BookKindID,
+      </if>
+      <if test="bookname != null">
+        BookName,
+      </if>
+      <if test="bookprice != null">
+        BookPrice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bookid != null">
+        #{bookid,jdbcType=INTEGER},
+      </if>
+      <if test="bookkindid != null">
+        #{bookkindid,jdbcType=INTEGER},
+      </if>
+      <if test="bookname != null">
+        #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="bookprice != null">
+        #{bookprice,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="zjc.bookmanage.org.model.BookExample" resultType="java.lang.Long">
+    select count(*) from bookjyc
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update bookjyc
+    <set>
+      <if test="record.bookid != null">
+        BookID = #{record.bookid,jdbcType=INTEGER},
+      </if>
+      <if test="record.bookkindid != null">
+        BookKindID = #{record.bookkindid,jdbcType=INTEGER},
+      </if>
+      <if test="record.bookname != null">
+        BookName = #{record.bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookprice != null">
+        BookPrice = #{record.bookprice,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update bookjyc
+    set BookID = #{record.bookid,jdbcType=INTEGER},
+      BookKindID = #{record.bookkindid,jdbcType=INTEGER},
+      BookName = #{record.bookname,jdbcType=VARCHAR},
+      BookPrice = #{record.bookprice,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="zjc.bookmanage.org.model.Book">
+    update bookjyc
+    <set>
+      <if test="bookkindid != null">
+        BookKindID = #{bookkindid,jdbcType=INTEGER},
+      </if>
+      <if test="bookname != null">
+        BookName = #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="bookprice != null">
+        BookPrice = #{bookprice,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where BookID = #{bookid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="zjc.bookmanage.org.model.Book">
+    update bookjyc
+    set BookKindID = #{bookkindid,jdbcType=INTEGER},
+      BookName = #{bookname,jdbcType=VARCHAR},
+      BookPrice = #{bookprice,jdbcType=VARCHAR}
+    where BookID = #{bookid,jdbcType=INTEGER}
+  </update>
+</mapper>
