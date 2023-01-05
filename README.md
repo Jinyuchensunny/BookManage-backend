@@ -1,5 +1,5 @@
 # bookmanage-springboot
-A book management system based on springboot
+A book management system based on springboot-backend
 
 - Get all book categories
 - Find all books by book classification number
